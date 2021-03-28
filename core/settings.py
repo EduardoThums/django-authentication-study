@@ -39,13 +39,20 @@ SITE_ID = 1
 
 ROOT_URLCONF = 'core.urls'
 
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend'
+# ]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication'
     ]
 }
 
 REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'potato'
 
 TEMPLATES = [
     {
@@ -90,6 +97,27 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.server': {
+            'level': 'INFO',
+            'handlers': ['console'],
+            'propagate': False
+        },
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False
+        }
+    }
+}
 
 LANGUAGE_CODE = 'en-us'
 

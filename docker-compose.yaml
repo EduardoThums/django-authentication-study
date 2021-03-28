@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  poc-database:
+    image: postgres:12.2-alpine
+    container_name: poc-database
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - 5432:5432
+    volumes:
+      - poc-database:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    environment:
+      POSTGRES_PASSWORD: authentication-poc
+      POSTGRES_USER: authentication-poc
+      POSTGRES_DB: authentication-poc
+
+  poc-redis:
+    image: redis:6.2.1-alpine
+    container_name: poc-redis
+    ports:
+      - 6379:6379
+    volumes:
+      - poc-redis:/data
+
+volumes:
+  poc-database:
+  poc-redis:

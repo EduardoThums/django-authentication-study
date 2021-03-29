@@ -11,14 +11,12 @@ def cache_trainer(request):
     user_id = request.user.id
 
     trainer_key = f'{settings.TRAINER_CACHE_PREFIX}/{user_id}'
-    trainer = cache.get(trainer_key)
 
-    if trainer is None:
-        trainer = cache.set(
-            trainer_key,
-            models.Trainer.objects.filter(user_id=user_id).first,
-            settings.TRAINER_CACHE_TTL
-        )
+    trainer = cache.get_or_set(
+        trainer_key,
+        models.Trainer.objects.filter(user_id=user_id).first,
+        settings.TRAINER_CACHE_TTL
+    )
 
     user_trainer = request.user
     user_trainer.trainer = trainer

@@ -44,7 +44,7 @@ ROOT_URLCONF = 'core.urls'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+        'core.authentication.HeaderJWTAuthentication'
     ]
 }
 
@@ -53,7 +53,6 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 }
 
 REST_USE_JWT = True
-JWT_AUTH_COOKIE = 'potato'
 
 CACHES = {
     "default": {
@@ -65,6 +64,8 @@ CACHES = {
     }
 }
 
+USER_CACHE_PREFIX = 'user'
+USER_CACHE_TTL = 1209600  # should be the same of session
 TRAINER_CACHE_PREFIX = 'trainer'
 TRAINER_CACHE_TTL = 60 * 10
 

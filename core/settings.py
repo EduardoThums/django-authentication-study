@@ -12,7 +12,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
@@ -23,6 +22,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    'pokedex.apps.PokedexConfig'
 ]
 
 MIDDLEWARE = [
@@ -33,26 +33,40 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middlewares.TrainerCacheMiddleware'
 ]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 SITE_ID = 1
 
 ROOT_URLCONF = 'core.urls'
 
-# AUTHENTICATION_BACKENDS = [
-#     'django.contrib.auth.backends.ModelBackend',
-#     'allauth.account.auth_backends.AuthenticationBackend'
-# ]
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication'
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     ]
+}
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'pokedex.serializers.TrainerRegistrationSerializer'
 }
 
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'potato'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        }
+    }
+}
+
+TRAINER_CACHE_PREFIX = 'trainer'
+TRAINER_CACHE_TTL = 60 * 10
 
 TEMPLATES = [
     {

@@ -7,6 +7,9 @@ run-api:
 apply-migrations:
 	./manage.py migrate
 
+make-migrations:
+	./manage.py makemigrations
+
 freeze-dependencies:
 	pip freeze > requirements.txt
 

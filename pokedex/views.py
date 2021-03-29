@@ -19,6 +19,4 @@ class PokedexViewSet(viewsets.ViewSet):
             ]
         }
 
-        self.request.user.id
-
         return Response(data=data)
